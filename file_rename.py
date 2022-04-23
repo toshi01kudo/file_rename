@@ -5,7 +5,7 @@ name_ptrn = re.compile(r'(.*) \((\d{1,3})\)(.*)')
 # 拡張子.jpgのファイルを取得する
 path = './*.jpg'
 
-# txtファイルを取得する
+# 該当ファイルを取得する
 flist = glob.glob(path)
 print('変更前')
 print(flist)
