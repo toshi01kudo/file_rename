@@ -1,23 +1,47 @@
-import re, glob, os
+import re, glob, os, sys
 
-name_ptrn = re.compile(r'(.*) \((\d{1,3})\)(.*)')
+def main(dry_run=False):
 
-# 拡張子.jpgのファイルを取得する
-path = './*.jpg'
+    ### dry-run
+    # 強制dry-runモード(手動切替)
+    enforce_dryrun = False
 
-# 該当ファイルを取得する
-flist = glob.glob(path)
-print('変更前')
-print(flist)
+    # 何らかの引数が与えられたらdry-runモード
+    if len(sys.argv) > 1 or enforce_dryrun:
+        print("run dry-run mode")
+        dry_run = True
 
-for file in flist:
-    #file_name = name_ptrn.search(file).group(0)
-    #num = name_ptrn.search(file).group(2)
-    new_file_name = name_ptrn.search(file).group(1)+'_'+name_ptrn.search(file).group(2).zfill(3)+name_ptrn.search(file).group(3)
-    #print(file)
-    #print(new_file_name)
-    os.rename(file, new_file_name)
+    ### パラメータ
+    ### こちらの記載内容を基本的には変更する
+    # 拡張子.jpgのファイルを取得する
+    path = './*.jpg'
 
-list = glob.glob(path)
-print('変更後')
-print(list)
+    # 名前一致パターン
+    #name_ptrn = re.compile(r'(.*) \((\d{1,3})\)(.*)')
+    name_ptrn = re.compile(r'(.*)(\d{1,3})(.*)')
+
+    ### プログラム開始
+    # 該当ファイルを取得する
+    flist = glob.glob(path)
+    print('変更前')
+    print(flist)
+
+    new_file_name_list = []
+
+    for file in flist:
+        #new_file_name = name_ptrn.search(file).group(1)+'_'+name_ptrn.search(file).group(2).zfill(3)+name_ptrn.search(file).group(3)
+        new_file_name = name_ptrn.search(file).group(1)+name_ptrn.search(file).group(2).zfill(3)+name_ptrn.search(file).group(3)
+        new_file_name_list.append(new_file_name)
+        if not dry_run:
+            os.rename(file, new_file_name)
+
+    list = glob.glob(path)
+    print('変更後')
+    if dry_run:
+        print(new_file_name_list)
+    else:
+        print(list)
+    
+
+if __name__ == "__main__":
+    main()
