@@ -18,7 +18,7 @@ def main(dry_run=False):
 
     # 名前一致パターン
     #name_ptrn = re.compile(r'(.*) \((\d{1,3})\)(.*)')
-    name_ptrn = re.compile(r'(.*)(\d{1,3})(.*)')
+    name_ptrn = re.compile(r'(.*_)(\d{1,3})(\..*)')
 
     ### プログラム開始
     # 該当ファイルを取得する
